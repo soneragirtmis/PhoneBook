@@ -1,0 +1,56 @@
+using System;
+using System.Collections;
+using System.Text;
+using System.Data;
+using FlowDocumentInterface;
+using eBAFormData;
+
+if(parameters.ContainsKey("Request.Id") && (Convert.ToInt32(parameters["Request.Id"])==21 || Convert.ToInt32(parameters["Request.Id"])==22 || Convert.ToInt32(parameters["Request.Id"])==24 || Convert.ToInt32(parameters["Request.Id"])==25) && (view == "SatinalmaDefault" || view == "SatinalmaOnay"))
+            {         
+                   
+                eBAForm frm = new eBAForm(Id);
+                FormDetailsGrid DTECA = frm.DetailsGrids["DetayTabloECA"];  
+                for(int i =0; i<DTECA.Rows.Count; i++)
+                {
+                    if(Convert.ToDouble(DTECA.Rows[i]["DTElmorKarlilikECA"].AsString)<Convert.ToDouble("6,50"))
+                    {
+                        summary.AddMessage("ECA ürün grubunda Elmor Karlılık Oranı 6,50 altında olan ürünler mevcut. Lütfen tüm ürünlerin Karlılık Oranı en az 6,50 şekilde düzenleyin.");
+                        break;
+                    }
+                }
+                FormDetailsGrid DTVALF = frm.DetailsGrids["DetayTabloVALF"];  
+                for(int i =0; i<DTVALF.Rows.Count; i++)
+                {
+                    if(Convert.ToDouble(DTVALF.Rows[i]["DTElmorKarlilikVALF"].AsString)<Convert.ToDouble("6,50"))
+                    {
+                        summary.AddMessage("VALF ürün grubunda Elmor Karlılık Oranı 6,50 altında olan ürünler mevcut. Lütfen tüm ürünlerin Karlılık Oranı en az 6,50 şekilde düzenleyin.");
+                        break;
+                    }
+                }
+                FormDetailsGrid DTARYAK = frm.DetailsGrids["DetayTabloARYAK"];  
+                for(int i =0; i<DTARYAK.Rows.Count; i++)
+                {
+                    if(Convert.ToDouble(DTECA.Rows[i]["DTElmorKarlilikARYAK"].AsString)<Convert.ToDouble("6,50"))
+                    {
+                        summary.AddMessage("ARYAK ürün grubunda Elmor Karlılık Oranı 6,50 altında olan ürünler mevcut. Lütfen tüm ürünlerin Karlılık Oranı en az 6,50 şekilde düzenleyin.");
+                        break;
+                    }
+                }
+                FormDetailsGrid DTSEREL = frm.DetailsGrids["DetayTabloSEREL"];  
+                for(int i =0; i<DTSEREL.Rows.Count; i++)
+                {
+                    if(Convert.ToDouble(DTECA.Rows[i]["DTElmorKarlilikSEREL"].AsString)<Convert.ToDouble("6,50"))
+                    {
+                        summary.AddMessage("SEREL ürün grubunda Elmor Karlılık Oranı 6,50 altında olan ürünler mevcut. Lütfen tüm ürünlerin Karlılık Oranı en az 6,50 şekilde düzenleyin.");
+                        break;
+                    }
+                }
+            }
+            if ((ProjeTipi.ToString()=="Konut"||ProjeTipi.ToString()=="Otel"||ProjeTipi.ToString()=="Hastane"||ProjeTipi.ToString()=="Yurt") && String.IsNullOrEmpty(Convert.ToString(DaireSayisi)))
+        	   summary.AddMessage("Proje Tipi Konut, Otel, Hastane ve Yurt seçimlerinde Daire/Oda Sayısı alanı zorunlu alandır.");
+            
+            if(view=="TalepSahibiOnay" && !String.IsNullOrEmpty(Convert.ToString(IskontoMesaj)))
+            {
+                summary.AddMessage(IskontoMesaj.ToString());    
+            }
+        }
